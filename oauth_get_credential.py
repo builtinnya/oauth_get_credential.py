@@ -29,6 +29,7 @@ from rauth.service import OAuth1Service
 import logging
 logger = logging.getLogger('oauth_get_credential')
 
+
 def _input(prompt):
     """Input non-empty string from user."""
 
@@ -38,6 +39,7 @@ def _input(prompt):
         s = raw_input(prompt).strip()
 
     return s
+
 
 def fill_args(args):
     """Show prompts to user to fill the required arguments."""
@@ -59,6 +61,7 @@ def fill_args(args):
     if not args.consumer_secret:
         args.consumer_secret = _input('Client credential secret: ')
 
+
 def load_config(args):
     """Load a configuration file and override specified arguments."""
 
@@ -75,12 +78,14 @@ def load_config(args):
                 arg_value = row[1]
                 setattr(args, arg_name, arg_value)
 
+
 def yes(text):
     """True only if the given text expresses affirmative."""
 
     import re
 
     return re.match('yes|true|ok', text, re.IGNORECASE)
+
 
 def config_logger(args):
     """Configure the logger."""
@@ -96,6 +101,7 @@ def config_logger(args):
     )
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+
 
 def main(args):
     """Application entry point."""
@@ -121,7 +127,10 @@ def main(args):
         params.update(urlparse.parse_qs(args.params))
 
     logger.debug('Attempting to request a temporal credential...')
-    temporal_credential = service.get_request_token(method='GET', params=params)
+    temporal_credential = service.get_request_token(
+        method='GET',
+        params=params
+    )
 
     request_token, request_token_secret = temporal_credential
     logger.debug('request_token="{}", request_token_secret="{}"'.format(
@@ -148,6 +157,7 @@ def main(args):
 
     print 'oauth_token={}'.format(access_token)
     print 'oauth_token_secret={}'.format(access_token_secret)
+
 
 if __name__ == '__main__':
 
